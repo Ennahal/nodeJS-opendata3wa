@@ -1,21 +1,23 @@
+require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const app = express();
 
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded({extended: false}))
+
 app.set('views', './views')
 app.set('view engine', 'pug')
 
-app.get('/', function(req, res) {
-    res.render('index');  
-});
+require("./app/routes")(app)
 
-app.get('/login', function(req, res) {
-    res.render('login');  
-});
-
-app.get('/signup', function(req, res) {
-    res.render('signup');  
-});
-
-app.listen(8080);
+mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DBNAME}`, { useNewUrlParser: true } )
+    .then(() =>
+    {
+        app.listen(8080, () =>
+        {
+            console.log('localhost:8080')
+        });
+    })

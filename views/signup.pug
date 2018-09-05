@@ -3,6 +3,9 @@ block content
     .main.container
         .row
             .col-md-6.col-md-offset-3
+                if err
+                    each val in err
+                        p.alert.alert-danger Il ya une erreur: #{val.message}
                 h1.titles Inscription
                 form(method='POST' action='/signup')
                     div.form-group

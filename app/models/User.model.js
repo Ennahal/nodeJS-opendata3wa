@@ -1,16 +1,18 @@
 // Utilisation du module npm 'mongoose'
 const mongoose = require('mongoose');
 
+const hash = require('./../hash');
+
 // DÃ©finition du "SchÃ©ma" d'un utilisateur
 const UserSchema = mongoose.Schema({
-	firstname : { type: String, required: true },
-	lastname : { type: String, required: true  },
+	firstname : { type: String, required: [true, 'le chanp prenon est requis'] },
+	lastname : { type: String, required:[true, 'le chanp non est requis']  },
     
     // Validateur personnalisÃ© qui vÃ©rifie le format d'une adresse e-mail.
     // BasÃ© sur la documentation de mongoose : http://mongoosejs.com/docs/validation.html#custom-validators 
     email : {
         type: String,
-        required: true, 
+        required: [true, 'le chanp email est requis'], 
         validate: {
             validator: function(mailValue) {
                 // c.f. http://emailregex.com/
@@ -21,19 +23,21 @@ const UserSchema = mongoose.Schema({
         }
     },
 
-    salt: { type: String, required: true  },
-    hash: { type: String, required: true  }
+    salt: { type: String, required: [true, 'le chanp password est requis'] },
+    hash: { type: String, required: [true, 'le chanp confirm password est requis'] }
 
 });
 
 UserSchema.statics.signup = function (firstname, lastname, email, password, confirmPassword)
                             {
-                                return this.create({
-                                    'firstname': firstname,
-                                    'lastname': lastname,
-                                    'email': email,
-                                    'hash': '12345',
-                                    'salt': '12345'
+                                return hash(password).then(data =>{
+                                    return this.create({
+                                        'firstname': firstname,
+                                        'lastname': lastname,
+                                        'email': email,
+                                        'hash': data.hash,
+                                        'salt': data.salt
+                                    })
                                 })
                             };
 

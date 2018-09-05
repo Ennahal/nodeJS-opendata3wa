@@ -24,6 +24,8 @@ module.exports = (app) =>
             req.body.confirmPassword
         ).then(() =>{
             res.redirect('/?signup=ok')
+        }).catch(err =>{
+            res.render("signup.pug", {err: err.errors})
         })
     });
 }

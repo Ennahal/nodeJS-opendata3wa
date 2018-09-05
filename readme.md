@@ -6,12 +6,12 @@ Exersice sur NodeJS 3WA
 
 Pour installer ce projet il vous faux:
 
-´´´
+```
 NodeJS
-´´´
+```
 
 ### Installation
 
-´´´
+```
 npm install
-´´´
+```

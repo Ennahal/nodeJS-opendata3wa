@@ -23,11 +23,17 @@ const UserSchema = mongoose.Schema({
         }
     },
 
-    salt: { type: String, required: [true, 'le chanp password est requis'] },
-    hash: { type: String, required: [true, 'le chanp confirm password est requis'] }
+    salt: { type: String },
+    hash: { type: String },
+    githubId: { type: String }
 
 });
 
+/*
+    Ajout d'une méthode personnalisée "signup" pour inscrire un utilisateur via
+    le formulaire d'inscription classique.
+    Cette méthode accepte les 5 paramètres obligatoires définissant un User
+*/
 UserSchema.statics.signup = function (firstname, lastname, email, password, confirmPassword)
                             {
                                 return hash(password).then(data =>{
@@ -41,6 +47,23 @@ UserSchema.statics.signup = function (firstname, lastname, email, password, conf
                                 })
                             };
 
+
+/*
+    Ajout de la méthode permettant de vérifier un mot de passe
+*/
+
+UserSchema.statics.verifyPass = function(passwordInClear, userObject) {
+	const userSalt = userObject.salt;
+    const userHash = userObject.hash;
+    
+    return hash(passwordInClear, userSalt).then((data) => {
+    	if (data.hash === userHash) {
+        	return Promise.resolve(userObject)
+        } else {
+        	return Promise.reject(new Error('Mot de passe invalide!'))
+        }
+    });
+}
 
 // Export du ModÃ¨le mongoose reprÃ©sentant un objet User
 module.exports = mongoose.model('User', UserSchema);

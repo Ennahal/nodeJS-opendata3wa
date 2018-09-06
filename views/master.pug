@@ -7,12 +7,16 @@ html(lang="fr")
         link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
         link(rel="stylesheet", href="css/style.css")
     body
-        header
-            div.header
-                div.btn
-                    a.btn(href='/login') Connexion 
-                    a.btn(href='/signup') Inscription
-                    a.btn(href='/') Home
+        header 
+            if user
+                p
+                    | Vous êtes connecté en tant que #{user.firstname} #{user.lastname}
+            else
+                div.header
+                    div.btn
+                        a.btn(href='/login') Connexion 
+                        a.btn(href='/signup') Inscription
+                        a.btn(href='/') Home
                     
         each messages, kind in flashMessages
             div.alert.alert-success

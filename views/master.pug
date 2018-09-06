@@ -13,5 +13,10 @@ html(lang="fr")
                     a.btn(href='/login') Connexion 
                     a.btn(href='/signup') Inscription
                     a.btn(href='/') Home
+                    
+        each messages, kind in flashMessages
+            div.alert.alert-success
+                each message in messages
+                    | #{message}
         main  
             block content

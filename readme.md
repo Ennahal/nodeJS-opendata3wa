@@ -1,10 +1,10 @@
 # Project Open Data
 
-Exersice sur NodeJS 3WA
+Exercice sur Node Js 3WA
 
 ## Conditions préalables
 
-Pour installer ce projet il vous faux:
+Pour installer ce projet il vous faut:
 
 ```
 NodeJS

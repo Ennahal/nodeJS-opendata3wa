@@ -2,11 +2,26 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const session = require('express-session')
+const flash = require('connect-flash')
 
 const app = express();
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended: false}))
+
+app.use(session({
+    secret: 'opendata3wa rocks',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+  }))
+
+  app.use(flash())
+  app.use((req, res, next) =>{
+      app.locals.flashMessages = req.flash()
+      next()
+  })
 
 app.set('views', './views')
 app.set('view engine', 'pug')

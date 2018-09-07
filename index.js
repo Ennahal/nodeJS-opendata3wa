@@ -39,8 +39,8 @@ app.set('views', './views') // Indique que le dossier /views/ contient les fichi
 app.set('view engine', 'pug') // Configuration du moteur de template utilisé
 
 // Gestion des routes de l'application dans un fichier à part
-require("./app/routes")(app, passport)
 require('./app/passport')(passport)
+require("./app/routes")(app, passport)
 
 // Connexion à la base mongo ...    
 mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DBNAME}`, { useNewUrlParser: true } )

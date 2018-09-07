@@ -56,5 +56,21 @@ module.exports = function(passport) {
       
       passport.deserializeUser(function(user, done) {
         done(null, user);
-      });    
+      });
+      
+    
+    // Stratégie Github
+    // ----
+    
+    passport.use(new GithubStrategy({
+    	clientID: process.env.GITHUB_CONSUMER_KEY,
+        clientSecret: process.env.GITHUB_CONSUMER_SECRET,
+        callbackURL: `http://${process.env.SERVER_NAME}:${process.env.SERVER_PORT}/auth/github/callback`
+    },
+    function(accessToken, refreshToken, profile, cb) {
+        User.signupViaGithub(profile)
+            .then(user => cb(null, user))
+            .catch(err => cb(err, false))
+      }
+    ));
 }

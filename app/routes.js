@@ -7,7 +7,7 @@ module.exports = (app, passport) =>
     	app.locals.user = req.user // Récupération de l'objet 'user' (sera existant si une session est ouverte, et undefined dans le cas contraire)
         next()
     })
-    
+
     app.get('/', function(req, res) {
         res.render('index');  
     });
@@ -23,7 +23,21 @@ module.exports = (app, passport) =>
         failureFlash: true,
         successFlash: { message: 'Connexion réussie. Bienvenue !' }
     }));
+
+    app.get('/auth/github', passport.authenticate('github'));
+    app.get('/auth/github/callback', passport.authenticate('github', {
+    	successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true,
+        successFlash: { message: 'Connexion réussie avec Github. Bienvenue !' }
+    }));
+
     
+    app.get('/logout', function(req, res) {
+        req.session.destroy()
+        req.logout()
+        res.redirect('/') 
+    });
     
     app.get('/signup', function(req, res) {
         res.render('signup');  
